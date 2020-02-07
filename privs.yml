@@ -1,0 +1,42 @@
+- hosts: all
+  vars:
+    oracle_home: /home/ansible/instantclient_12_2
+    user: dbusername
+    prt: "1521"
+    hostname: "hostname"
+    sname: dbname
+    oracle_env:
+      ORACLE_HOME: "{{oracle_home}}"
+      LD_LIBRARY_PATH: "{{oracle_home}}"
+      PATH: "{{oracle_home}}"
+
+  vars_files:
+    - /home/ansible/protect/vault-pass.yml
+
+  tasks:
+    - name: This playbook will grant or revoke privilges in the user.
+      oracle_privs:
+        user: "{{user}}"
+        password: "{{password}}"
+        service_name: "{{sname}}"
+        port: "{{prt}}"
+        hostname: "{{hostname}}"
+        privs:
+          - INSERT ANY TABLE
+        state: absent
+        roles:
+          - TSTSCH
+        quiet: false
+      environment: "{{oracle_env}}"
+      register: user_privs
+      delegate_to: localhost
+
+    - name: Display the query results
+      debug:
+        msg: "{{ user_privs }}"
+      with_items: msg.stdout
+
+    - local_action:
+        copy content={{user_privs.msg |to_yaml }}
+        dest=/home/ansible/protegrityt/log/user_privs.log
+~
