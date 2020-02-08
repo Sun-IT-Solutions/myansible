@@ -1,6 +1,5 @@
 sql1: select grantee FROM DBA_SYS_PRIVS where PRIVILEGE='INSERT ANY TABLE' and grantee not like 'SYS' and grantee != 'WMSYS' and grantee != 'DBA' and grantee != 'IMP_FULL_DATABASE';
 sql2: select grantee FROM DBA_SYS_PRIVS where PRIVILEGE='CREATE ANY TABLE' and grantee not like 'SYS' and grantee != 'WMSYS' and grantee != 'DBA' and grantee != 'IMP_FULL_DATABASE';
 
-privs:
- - CREATE ANY TABLE
- - INSERT ANY TABLE
+privs1: CREATE ANY TABLE
+privs2: INSERT ANY TABLE
