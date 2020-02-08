@@ -1,11 +1,11 @@
 - hosts: all
   vars:
     oracle_home: /home/ansible/instantclient_12_2
-    user: ANTMSYSDBA
+    user: USERNAME
     password: change12
     prt: "1521"
-    hostname: "22.174.101.30"
-    sname: protegrityt
+    hostname: "SERVER NAME"
+    sname: DBName
     oracle_env:
       ORACLE_HOME: "{{oracle_home}}"
       LD_LIBRARY_PATH: "{{oracle_home}}"
