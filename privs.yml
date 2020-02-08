@@ -19,12 +19,12 @@
       debug:
         msg: " {{item}}"
       with_items:
-        - "{{sqlq}}"
-      register: myqu
+        - "{{sql1}}"
+      register: sqlqry
 
     - name : Display the content
       debug:
-        msg: "{{myqu.results}}"
+        msg: "{{sqlqry.results}}"
 
     - name: "loop through list from a privilges"
       debug:
@@ -64,7 +64,7 @@
         service_name: "{{sname}}"
         port: "{{prt}}"
         hostname: "{{hostname}}"
-        privs: "{{privilges}}"
+        privs: "{{privu}}"
         state: absent
         roles: "{{item}}"
         quiet: false
