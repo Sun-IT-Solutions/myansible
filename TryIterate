@@ -7,9 +7,15 @@ main.yml
         service_name: "{{sname}}"
         port: "{{prt}}"
         host: "{{hostnme}}"
-        sql: "{{Script1}}"
+        sql: "{{Value}}"
       environment: "{{oracle_env}}"
       register: query_result
+      connection: local
+
+   - name: Runs the revoke statements and spool out.
+      command: $ORACLE_HOME/sqlplus -s {{user}}/{{password}}@{{sname}} @/home/ansible/Playbooks/{{sname}}/sql/{{Key}}_revoke.sql
+      environment: "{{oracle_env}}"
+      register: sqloutput
       connection: local
 
 
@@ -17,6 +23,7 @@ main.yml
 
 sqlvar.yml
 
+Key: Value
 Script1: select username from dba_users;
 Script2: select file_name from dba_data_files;
 Script3: select name from v$profile;
