@@ -1,5 +1,8 @@
 main.yml
 
+var_files:
+ - /home/ansible/sqlvar.yml
+ 
 - name: Script will revoke grants from certain user for in AWS RDS
       oracle_sql:
         username: "{{user}}"
