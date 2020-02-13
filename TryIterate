@@ -1,0 +1,23 @@
+main.yml
+
+- name: Script will revoke grants from certain user for in AWS RDS
+      oracle_sql:
+        username: "{{user}}"
+        password: "{{password}}"
+        service_name: "{{sname}}"
+        port: "{{prt}}"
+        host: "{{hostnme}}"
+        sql: "{{Script1}}"
+      environment: "{{oracle_env}}"
+      register: query_result
+      connection: local
+
+
+------
+
+sqlvar.yml
+
+Script1: select username from dba_users;
+Script2: select file_name from dba_data_files;
+Script3: select name from v$profile;
+Script4: select username from dba_profile;
