@@ -65,3 +65,10 @@
       register: sqloutput
       connection: local
       loop: "{{ scripts|dict2items }}"
+      
+      -------------------------------------------------------
+      
+      Variable file:
+Script1 : select 'Revoke ' || privilege || ' on UTL_FILE from ' || grantee || ';' from dba_tab_privs where table_name='UTL_FILE' and grantee not like 'APEX%' and grantee != 'CTXSYS' and grantee != 'DBSNMP' and grantee != 'DMSYS' and grantee != 'EXFSYS' and grantee not like 'FLOWS%' and grantee != 'MDSYS' and grantee != 'OLAPSYS' and grantee != 'ORACLE' and grantee != 'ORACLE_OCM' and grantee != 'ORDPLUGINS' and grantee != 'ORDSYS' and grantee != 'SQLTXPLAIN' and grantee != 'SYSMAN' and grantee != 'SYSTEM' and grantee != 'TIVOLI' and grantee != 'WMSYS' and grantee != 'XDB'  and grantee != 'DVSYS' and grantee != 'ANTMSYSDBA' and grantor != 'SYS' order by grantee;
+Script2 : select name from v$database;
+
