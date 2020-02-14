@@ -1,33 +1,67 @@
-main.yml
+- hosts: all
+  gather_facts: no
 
-var_files:
- - /home/ansible/sqlvar.yml
- 
-- name: Script will revoke grants from certain user for in AWS RDS
+  vars:
+    oracle_home: /home/ansible/instantclient_12_2
+    user: SUPERUSR
+    prt: "1521"
+    hostnme: "tstdb.cdst2nb9ngoi.us-east-1.rds.amazonaws.com"
+    sname: tstdb
+    script_path: /home/ansible
+    oracle_env:
+      ORACLE_HOME: "{{oracle_home}}"
+      LD_LIBRARY_PATH: "{{oracle_home}}"
+      PATH: "{{oracle_home}}"
+
+  vars_files:
+    - /home/ansible/Playbooks/vault/vault-pass.yml
+    - /home/ansible/Playbooks/dbavar/Compliance1.yml
+
+  tasks:
+
+    - include_vars:
+        file: /home/ansible/Playbooks/dbavar/Compliance1.yml
+        name: scripts
+    - debug:
+      vars:
+        sqlqry: "{{ item.key }}"
+        sqlid: "{{ item.value }}"
+      loop: "{{ scripts|dict2items }}"
+
+    - name: Script will revoke grants from certain user for in AWS RDS
       oracle_sql:
         username: "{{user}}"
         password: "{{password}}"
         service_name: "{{sname}}"
         port: "{{prt}}"
         host: "{{hostnme}}"
-        sql: "{{Value}}"
+        sql: "{{item.value}}"
       environment: "{{oracle_env}}"
       register: query_result
       connection: local
+      loop: "{{ scripts|dict2items }}"
 
-   - name: Runs the revoke statements and spool out.
-      command: $ORACLE_HOME/sqlplus -s {{user}}/{{password}}@{{sname}} @/home/ansible/Playbooks/{{sname}}/sql/{{Key}}_revoke.sql
+
+    - name: Display the query results
+      debug:
+        msg: "{{query_result}}"
+
+    - name: Generate Revoke Statement
+      copy:
+        dest: /home/ansible/Playbooks/{{sname}}/sql/{{item.key}}_revoke.sql
+        content: |
+         spool /home/ansible/Playbooks/{{sname}}/log/{{item.key}}.log
+         {% for line in query_result | flatten %}
+         {{ line }}
+         {% endfor %}
+         spool off;
+      delegate_to: localhost
+      connection: local
+      loop: "{{ scripts|dict2items }}"
+
+    - name: Runs the revoke statements and spool out.
+      command: $ORACLE_HOME/sqlplus -s {{user}}/{{password}}@{{sname}} @/home/ansible/Playbooks/{{sname}}/sql/{{item.key}}_revoke.sql
       environment: "{{oracle_env}}"
       register: sqloutput
       connection: local
-
-
-------
-
-sqlvar.yml
-
-Key: Value
-Script1: select username from dba_users;
-Script2: select file_name from dba_data_files;
-Script3: select name from v$profile;
-Script4: select username from dba_profile;
+      loop: "{{ scripts|dict2items }}"
