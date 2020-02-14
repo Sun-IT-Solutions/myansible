@@ -72,3 +72,79 @@
 Script1 : select 'Revoke ' || privilege || ' on UTL_FILE from ' || grantee || ';' from dba_tab_privs where table_name='UTL_FILE' and grantee not like 'APEX%' and grantee != 'CTXSYS' and grantee != 'DBSNMP' and grantee != 'DMSYS' and grantee != 'EXFSYS' and grantee not like 'FLOWS%' and grantee != 'MDSYS' and grantee != 'OLAPSYS' and grantee != 'ORACLE' and grantee != 'ORACLE_OCM' and grantee != 'ORDPLUGINS' and grantee != 'ORDSYS' and grantee != 'SQLTXPLAIN' and grantee != 'SYSMAN' and grantee != 'SYSTEM' and grantee != 'TIVOLI' and grantee != 'WMSYS' and grantee != 'XDB'  and grantee != 'DVSYS' and grantee != 'ANTMSYSDBA' and grantor != 'SYS' order by grantee;
 Script2 : select name from v$database;
 
+------------------------------------------------------------------------------------------------
+
+Here is the JSON output
+
+ok: [tstdb.cdst2nb9ngoi.us-east-1.rds.amazonaws.com] => {
+    "msg": {
+        "changed": false,
+        "msg": "All items completed",
+        "results": [
+            {
+                "ansible_facts": {
+                    "discovered_interpreter_python": "/usr/bin/python"
+                },
+                "ansible_loop_var": "item",
+                "changed": false,
+                "failed": false,
+                "invocation": {
+                    "module_args": {
+                        "host": "lcktstdb.cdst2nb9ngoi.us-east-1.rds.amazonaws.com",
+                        "hostname": "lcktstdb.cdst2nb9ngoi.us-east-1.rds.amazonaws.com",
+                        "mode": "normal",
+                        "password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER",
+                        "port": "1521",
+                        "script": null,
+                        "service_name": "lcktstdb",
+                        "sql": "select name from v$database;",
+                        "user": "ANTMSYSDBA",
+                        "username": "ANTMSYSDBA"
+                    }
+                },
+                "item": {
+                    "key": "RDS_Guardium_Compliance_176",
+                    "value": "select name from v$database;"
+                },
+                "msg": [
+                    [
+                        "LCKTSTDB"
+                    ]
+                ]
+            },
+            {
+                "ansible_loop_var": "item",
+                "changed": false,
+                "failed": false,
+                "invocation": {
+                    "module_args": {
+                        "host": "lcktstdb.cdst2nb9ngoi.us-east-1.rds.amazonaws.com",
+                        "hostname": "lcktstdb.cdst2nb9ngoi.us-east-1.rds.amazonaws.com",
+                        "mode": "normal",
+                        "password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER",
+                        "port": "1521",
+                        "script": null,
+                        "service_name": "lcktstdb",
+                        "sql": "select 'Revoke ' || privilege || ' on UTL_FILE from ' || grantee || ';' from dba_tab_privs where table_name='UTL_FILE' and grantee not like 'APEX%' and grantee != 'CTXSYS' and grantee != 'DBSNMP' and grantee != 'DMSYS' and grantee != 'EXFSYS' and grantee not like 'FLOWS%' and grantee != 'MDSYS' and grantee != 'OLAPSYS' and grantee != 'ORACLE' and grantee != 'ORACLE_OCM' and grantee != 'ORDPLUGINS' and grantee != 'ORDSYS' and grantee != 'SQLTXPLAIN' and grantee != 'SYSMAN' and grantee != 'SYSTEM' and grantee != 'TIVOLI' and grantee != 'WMSYS' and grantee != 'XDB'  and grantee != 'DVSYS' and grantee != 'ANTMSYSDBA' and grantor != 'SYS' order by grantee;",
+                        "user": "ANTMSYSDBA",
+                        "username": "ANTMSYSDBA"
+                    }
+                },
+                "item": {
+                    "key": "RDS_Guardium_Compliance_24",
+                    "value": "select 'Revoke ' || privilege || ' on UTL_FILE from ' || grantee || ';' from dba_tab_privs where table_name='UTL_FILE' and grantee not like 'APEX%' and grantee != 'CTXSYS' and grantee != 'DBSNMP' and grantee != 'DMSYS' and grantee != 'EXFSYS' and grantee not like 'FLOWS%' and grantee != 'MDSYS' and grantee != 'OLAPSYS' and grantee != 'ORACLE' and grantee != 'ORACLE_OCM' and grantee != 'ORDPLUGINS' and grantee != 'ORDSYS' and grantee != 'SQLTXPLAIN' and grantee != 'SYSMAN' and grantee != 'SYSTEM' and grantee != 'TIVOLI' and grantee != 'WMSYS' and grantee != 'XDB'  and grantee != 'DVSYS' and grantee != 'ANTMSYSDBA' and grantor != 'SYS' order by grantee;"
+                },
+                "msg": [
+                    [
+                        "Revoke EXECUTE on UTL_FILE from TESTDBA;"
+                    ],
+                    [
+                        "Revoke EXECUTE on UTL_FILE from TSTSCH;"
+                    ]
+                ]
+            }
+        ]
+    }
+}
+
+
