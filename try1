@@ -1,0 +1,33 @@
+    - name: Script will revoke grants from certain user for sql1 in Oracle DB
+      oracle_sql:
+        username: "{{user}}"
+        password: "{{password}}"
+        service_name: "{{sname}}"
+        port: "{{prt}}"
+        host: "{{hostnme}}"
+        sql: "{{sql1}}"
+      environment: "{{oracle_env}}"
+      register: query_result
+      connection: local
+
+    - name: Display the query results
+      debug:
+        msg: "{{ query_result.msg}}"
+
+    - name: Generate Revoke Statement
+      copy:
+        dest: /home/ansible/Playbooks/{{sname}}/sql/sql1.sql
+        content: |
+         spool /home/ansible/Playbooks/log/sql1.log append;
+         {% for line in query_result.msg|flatten %}
+         {{ line }}
+         {% endfor %}
+         spool off;
+      delegate_to: localhost
+      connection: local
+
+    - name: Runs the revoke statements for RDS_Guardium_Compliance24.
+      command: $ORACLE_HOME/sqlplus -s {{user}}/{{password}}@{{sname}} @/home/ansible/Playbooks/{{sname}}/sql/sql1_revoke.sql
+      environment: "{{oracle_env}}"
+      register: sqloutput
+      connection: local
